@@ -1,3 +1,5 @@
+
+
 # Nova Host (formerly Light Host)
 
 A modern VST/AU/VST3/LADSPA/LV2/AAX/ARA/AU v3 plugin host for macOS, Windows, and Linux that sits in the menu/task bar.
@@ -50,6 +52,8 @@ For more detailed information about Nova Host's features, see the [NovaHost READ
 2. Open the `NovaHost.jucer` file with Projucer (or `LightHost.jucer` for the legacy version)
 3. Select your target platform and export the project
 4. Build using your platform's development environment
+
+On Linux, run `./build_linux.sh` from the `Utilities` directory to check dependencies and build the project.
 
 ## Command Line Options
 
