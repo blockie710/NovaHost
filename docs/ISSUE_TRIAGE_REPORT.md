@@ -89,7 +89,7 @@ Seven of the ten explicitly prioritized issues hold their rank. Three were demot
 
 - **#54** (asio-device/medium/sometimes): Input channel-mapping feature request; valid but not fix-critical.
 - **#49** (asio-device/medium/always): ReaFIR FFT latency is expected behavior; document workaround (negative mic offset in OBS).
-- **#42** (asio-device/medium/sometimes): User-controllable buffer size already implemented in NovaHost (t_31f9a498); verify and close upstream.
+- **#42** (asio-device/medium/sometimes): Kept in the ASIO/device backlog. **2026-10-04 audit correction:** the earlier claim that buffer size was "already implemented in NovaHost (t_31f9a498)" is FALSE — NovaHost (JUCE app) contains no device/buffer code, and the cited t_31f9a498 work actually landed in a different product: the LibreCast/OBS win-asio plugin (`plugins/win-asio/asio-source.cpp`, `feature/native-win-asio` branch, commits 1269a2c/3e3c140 of 2026-08-23 — nine days *before* that task "completed", so it could not have been that task's output). The reported crackling at large buffer sizes remains an open LightHost defect; fixed upstream comment accordingly.
 
 Their slots went to critical crashes surfaced by the bulk triage (#48, #12, #61) — exactly the
 escalation the triage plan called for. Highest-severity items not in the Top 10: #47
@@ -120,10 +120,14 @@ persistence work, and #24's user-supplied fix video gets folded into recovery do
 |---|---|
 | Crash-adjacent | #11 (needs repro info), #35 (4h; may fall out of #63 work), #56 (4h load guard), #67 (8h macOS build) |
 | Config | #8 (4h settings-reset feature), #33 (4h settings UI) |
-| ASIO/device | #26 (16h per-input chains), #30 (4h routing docs), #31 (4h), #39 (1h latency docs), #44 (1h routing docs), #47 (8h processing path — first reserve), #49 (1h latency docs), #54 (8h channel mapping) |
+| ASIO/device | #26 (16h per-input chains), #30 (4h routing docs), #31 (4h), #39 (1h latency docs), #44 (1h routing docs), #47 (8h processing path — first reserve), #49 (1h latency docs), #54 (8h channel mapping), **#42 (8h buffer-size handling + crackle-at-large-buffer defect)** |
 | Other/UI | #3 (16h multi-instance (pairs #20)), #4 (8h auto-update), #7 (2h), #15 (covered by #52 fix), #17 (8h LV2), #20 (rides #3), #37 (menu cluster), #41 (menu cluster 12h with #62), #57 (4h bypass toggle), #58 (info-gate), #59 (info-gate), #62 (menu cluster) |
 
-### Wontfix / close-as-answered (10 issues)
+### Wontfix / close-as-answered (9 issues)
+
+> Note: #42 was originally listed here ("implemented in NovaHost"). The 2026-10-04 root-task audit
+> falsified that claim (see correction in Section 2 and Section 5); #42 has been moved to the
+> ASIO/device backlog. Upstream triage comments already reflect the corrected disposition.
 
 | Issue | Reason |
 |---|---|
@@ -133,12 +137,11 @@ persistence work, and #24's user-supplied fix video gets folded into recovery do
 | #21 — VST shortcut | VST shortcut request; low value, obsolete tracker item |
 | #28 — Request: change icon based on menubar colour | macOS icon-adaptation cosmetic request |
 | #36 — Any forks being maintained? | fork-maintenance question; answered by NovaHost |
-| #42 — Buffer Size | implemented in NovaHost (t_31f9a498); verify then close |
-| #53 — Backup VST settings to move to new PC? | config location documented; answer and close |
+| #53 — Backup VST settings to move to new PC? | config location documented (%APPDATA%\Light Host XML via JUCE ApplicationProperties); answer and close |
 | #68 — please never versions for never windows | newer-builds request; answered by NovaHost releases |
 | #69 — I updated LightHost | community announcement thread; not a defect |
 
-Counts: sprint 16 + backlog 26 + wontfix 10 = 52.
+Counts: sprint 16 + backlog 27 + wontfix 9 = 52.
 
 ---
 
@@ -179,4 +182,21 @@ the Top 10 on its own evidence.
 
 Per-issue triage records: `consolidated_52.json` in board workspace `t_7f7503ae` (kanban board
 lighthost-rehab). Fields: number, title, category, severity, repro.
+
+### Post-publication audit (2026-10-04, root task t_969afb12)
+
+- Full 52/52 re-verification (programmatic, not spot-check): every open upstream issue carries
+  exactly one `blockie710` triage comment; zero missing, zero duplicates; all 52 titles match
+  `consolidated_52.json`; allocation is a clean partition (16+27+9=52).
+- **Fourth phantom handoff caught — #42 / t_31f9a498 ("Add user-controllable ASIO buffer size").**
+  That task reported changing `plugins/win-asio/win-asio.cpp`; no such file exists in any repo.
+  The real buffer-size code (`plugins/win-asio/asio-source.cpp`, `OPT_BUFFER_SIZE` 32–8192 with
+  driver-envelope clamp) lives in `blockie710/obs-studio` — the LibreCast/OBS plugin, a different
+  product from NovaHost — on branch `feature/native-win-asio`, committed 2026-08-23, nine days
+  before t_31f9a498 ran. NovaHost itself has zero device/buffer source. Conclusion: the
+  implementation predates the task and belongs to another product; #42 remains an open LightHost
+  defect. Corrected in this report, in the upstream #42 comment, and in the root-task record.
+- Wontfix decision comments upgraded on #9, #10, #19, #21 (previously generic rationale text).
+- Upstream close/label operations remain impossible (pull-only perms: push=false, triage=false);
+  the wontfix decisions are recorded in comments for the maintainer to action.
 
