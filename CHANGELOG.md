@@ -21,13 +21,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tray/menu bar behavior: Windows system tray, macOS menu bar (dock icon hidden), Linux system tray (DE-dependent).
 - GPU-accelerated rendering for plugin UIs (optional, enabled by default).
 - Completely redesigned plugin scanning system to prevent crashes and improve stability.
-- New professional Windows installer with VST directory detection.
+- New professional Windows installer with VST/VST3 file associations.
 - Improved High DPI handling on Windows 10/11 and modern macOS.
 - Enhanced UI with better plugin organization and modern visual design.
-- Added command line options: `-multi-instance` and `-gpu-acceleration=off`.
+- Added command line option: `-multi-instance`.
 ### Changed
 - Project and application name changed from "Light Host" to "Nova Host".
-- Updated JUCE version to 4.2.4 (with view to migrating to 8.x).
 ### Fixed
 - Fixed memory leaks and improved stability.
 ### Deprecated
